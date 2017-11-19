@@ -1,0 +1,181 @@
+name: "RNet"
+op {
+  input: "data"
+  input: "conv1_w"
+  input: "conv1_b"
+  output: "conv1"
+  type: "Conv"
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  arg {
+    name: "kernel"
+    i: 3
+  }
+}
+op {
+  input: "conv1"
+  input: "conv1_Slope"
+  output: "conv1"
+  type: "PRelu"
+}
+op {
+  input: "conv1"
+  output: "pool1"
+  type: "MaxPool"
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "pad_r"
+    i: 1
+  }
+  arg {
+    name: "pad_b"
+    i: 1
+  }
+  arg {
+    name: "pad_t"
+    i: 0
+  }
+  arg {
+    name: "pad_l"
+    i: 0
+  }
+}
+op {
+  input: "pool1"
+  input: "conv2_w"
+  input: "conv2_b"
+  output: "conv2"
+  type: "Conv"
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  arg {
+    name: "kernel"
+    i: 3
+  }
+}
+op {
+  input: "conv2"
+  input: "conv2_Slope"
+  output: "conv2"
+  type: "PRelu"
+}
+op {
+  input: "conv2"
+  output: "pool2"
+  type: "MaxPool"
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+}
+op {
+  input: "pool2"
+  input: "conv3_w"
+  input: "conv3_b"
+  output: "conv3"
+  type: "Conv"
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  arg {
+    name: "kernel"
+    i: 2
+  }
+}
+op {
+  input: "conv3"
+  input: "conv3_Slope"
+  output: "conv3"
+  type: "PRelu"
+}
+op {
+  input: "conv3"
+  input: "conv4_w"
+  input: "conv4_b"
+  output: "conv4"
+  type: "FC"
+}
+op {
+  input: "conv4"
+  input: "conv4_Slope"
+  output: "conv4"
+  type: "PRelu"
+}
+op {
+  input: "conv4"
+  input: "conv5-1_w"
+  input: "conv5-1_b"
+  output: "conv5-1"
+  type: "FC"
+}
+op {
+  input: "conv4"
+  input: "conv5-2_w"
+  input: "conv5-2_b"
+  output: "conv5-2"
+  type: "FC"
+}
+op {
+  input: "conv5-1"
+  output: "prob1"
+  type: "Softmax"
+}
+external_input: "data"
+external_input: "conv1_w"
+external_input: "conv1_b"
+external_input: "conv1_Slope"
+external_input: "conv2_w"
+external_input: "conv2_b"
+external_input: "conv2_Slope"
+external_input: "conv3_w"
+external_input: "conv3_b"
+external_input: "conv3_Slope"
+external_input: "conv4_w"
+external_input: "conv4_b"
+external_input: "conv4_Slope"
+external_input: "conv5-1_w"
+external_input: "conv5-1_b"
+external_input: "conv5-2_w"
+external_input: "conv5-2_b"
+external_output: "prob1"
+external_output: "conv5-2"
